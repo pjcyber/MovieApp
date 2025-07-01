@@ -1,8 +1,8 @@
 # MovieApp
 this a small iOS app demo
 
-<img src="https://github.com/user-attachments/assets/fa05386e-1105-4a5d-9157-f0605ba7dc15" alt="Home screen" width="300" height="200">
-<img src="https://github.com/user-attachments/assets/30bc5e42-b926-441a-960e-1a70237c66e9" alt="Home screen Search filter" width="300" height="200">
+<img src="https://github.com/user-attachments/assets/fa05386e-1105-4a5d-9157-f0605ba7dc15" alt="Home screen" width="200" height="300">
+<img src="https://github.com/user-attachments/assets/30bc5e42-b926-441a-960e-1a70237c66e9" alt="Home screen Search filter" width="200" height="300">
 
 
 
