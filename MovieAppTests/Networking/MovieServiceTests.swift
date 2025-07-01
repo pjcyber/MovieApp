@@ -2,65 +2,70 @@
 //  MovieServiceTests.swift
 //  MovieAppTests
 //
-//  Created by Pedro Borrayo on 30/06/25.
+//  Created by Pedro Borrayo on 19/07/25.
 //
 
 import XCTest
 @testable import MovieApp
 
 final class MovieServiceTests: XCTestCase {
+    
+    func testFetchNowPlayingReturnsSuccess() async throws {
+        // Given
+        let mockClient = MockMovieAPIClient(result: .success(MovieResponse.fixture))
+        let service = MovieService(client: mockClient)
 
-    var movieService: MovieService!
+        // When
+        let result = try await service.fetchNowPlaying()
 
-    override func setUp() {
-        super.setUp()
-
-        let config = URLSessionConfiguration.ephemeral
-        config.protocolClasses = [MockURLProtocol.self]
-        let session = URLSession(configuration: config)
-
-        movieService = MovieService(session: session)
+        // Then
+        XCTAssertEqual(result.page, 1)
+        XCTAssertEqual(result.results.count, 1)
     }
 
-    func testFetchNowPlayingSuccess() async throws {
-        let mockJSON = """
-        {
-            "page": 1,
-            "results": [{
-                "id": 1,
-                "title": "Test Movie",
-                "overview": "Overview here.",
-                "poster_path": "/poster.jpg",
-                "vote_average": 7.5,
-                "vote_count": 1000
-            }],
-            "total_pages": 1,
-            "total_results": 1
+    func testFetchNowPlayingThrowsError() async {
+        // Given
+        let mockClient = MockMovieAPIClient(result: .failure(MovieAPIError.invalidResponse))
+        let service = MovieService(client: mockClient)
+
+        // When
+        do {
+            _ = try await service.fetchNowPlaying()
+            XCTFail("Expected to throw, but did not")
+        } catch {
+            // Then
+            XCTAssertTrue(error is MovieAPIError)
         }
-        """.data(using: .utf8)!
-
-        MockURLProtocol.mockResponseData = mockJSON
-        MockURLProtocol.mockResponse = HTTPURLResponse(url: URL(string: "https://example.com")!,
-                                                       statusCode: 200,
-                                                       httpVersion: nil,
-                                                       headerFields: nil)
-
-        let (response, error) = await movieService.fetchNowPlaying()
-
-        XCTAssertNil(error)
-        XCTAssertEqual(response?.page, 1)
-        XCTAssertEqual(response?.results.count, 1)
-        XCTAssertEqual(response?.results.first?.title, "Test Movie")
     }
+    
+    func testSearchMoviesReturnsSuccess() async throws {
+        // Given
+        let expectedResponse = MovieResponse.fixture
 
-    func testFetchNowPlayingNilResponse() async throws {
-        MockURLProtocol.mockResponseData = Data()
-        MockURLProtocol.mockResponse = HTTPURLResponse(url: URL(string: "https://example.com")!,
-                                                       statusCode: 500,
-                                                       httpVersion: nil,
-                                                       headerFields: nil)
+        let mockClient = MockMovieAPIClient(result: .success(MovieResponse.fixture))
+        let service = MovieService(client: mockClient)
 
-        let (response, error) = await movieService.fetchNowPlaying()
-        XCTAssertNil(response)
+        // When
+        let response = try await service.searchMovies("Inception", 1)
+
+        // Then
+        XCTAssertEqual(response.results.first?.title, expectedResponse.results.first?.title)
+    }
+    
+    func testSearchMoviesWithInvalidQueryThrowsInvalidURLError() async throws {
+        // Given
+        let mockClient = MockMovieAPIClient(result: .failure(MovieAPIError.invalidResponse))
+        let service = MovieService(client: mockClient)
+        let brokenQuery = ""
+
+        // When / Then
+        do {
+            _ = try await service.searchMovies(brokenQuery, 1)
+            XCTFail("Expected to throw invalidURL error, but did not")
+        } catch let error as MovieAPIError {
+            XCTAssertEqual(error.errorDescription, MovieAPIError.invalidURL.errorDescription)
+        } catch {
+            XCTFail("Unexpected error type: \(error)")
+        }
     }
 }

@@ -2,7 +2,7 @@
 //  MovieViewModel.swift
 //  MovieApp
 //
-//  Created by Pedro Borrayo on 27/06/25.
+//  Created by Pedro Borrayo on 19/07/25.
 //
 
 import Foundation
@@ -33,16 +33,13 @@ class MovieViewModel: ObservableObject {
         guard currentPage <= totalPages else { return }
         
         isLoading = true
-        
-        let (data, movieApiError) =  await movieService.fetchNowPlaying(currentPage)
-        if let err = movieApiError {
-            
-        }
-        
-        if let response = data{
+        do {
+            let response =  try await movieService.fetchNowPlaying(currentPage)
             movies += response.results
             totalPages = response.totalPages
             currentPage += 1
+        } catch let error {
+            handleError(error)
         }
         isLoading = false
     }
@@ -55,15 +52,13 @@ class MovieViewModel: ObservableObject {
         guard currentPage <= totalPages else { return }
         
         isLoading = true
-        
-        let (data, movieApiError)  = await movieService.searchMovies(searchText, 1)
-        if let err = movieApiError {
-            
-        }
-        if let response = data{
+        do {
+            let response  = try await movieService.searchMovies(searchText, 1)
             movies += response.results
             totalPages = response.totalPages
             currentPage += 1
+        } catch let error {
+            handleError(error)
         }
         
         isLoading = false
@@ -73,6 +68,18 @@ class MovieViewModel: ObservableObject {
         currentPage = 1
         totalPages = 1
         movies = []
+    }
+    
+    func handleError(_ error: Error) {
+        if let movieError = error as? MovieAPIError {
+            print("MovieAPIError: \(movieError.errorDescription)")
+        } else if let decodingError = error as? DecodingError {
+            print("DecodingError: \(decodingError)")
+        } else if let urlError = error as? URLError {
+            print(" RLError: \(urlError)")
+        } else {
+            print("Unknown error type: \(error)")
+        }
     }
     
 }

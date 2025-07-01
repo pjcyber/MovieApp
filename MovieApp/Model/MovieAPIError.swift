@@ -2,19 +2,19 @@
 //  MovieAPIError.swift
 //  MovieApp
 //
-//  Created by Pedro Borrayo on 29/06/25.
+//  Created by Pedro Borrayo on 19/07/25.
 //
 
 import Foundation
 
-enum MovieAPIError: Error, LocalizedError {
+enum MovieAPIError: Error,LocalizedError {
     case decodingError(underlying: Error)
     case invalidResponse
     case invalidURL
     case networkError(Error)
     case unknown
 
-    var errorDescription: String? {
+    var errorDescription: String {
         switch self {
         case .decodingError(let underlying):
             return "Decoding failed: \(underlying.localizedDescription)"

@@ -2,13 +2,13 @@
 //  StorageService.swift
 //  MovieApp
 //
-//  Created by Pedro Borrayo on 30/06/25.
+//  Created by Pedro Borrayo on 19/07/25.
 //
 
 import Foundation
 import SwiftData
 
-class FavoriteMovieService {
+class FavoriteMovieService: FavoriteMovieServiceProtocol {
     
     static let shared = FavoriteMovieService()
 

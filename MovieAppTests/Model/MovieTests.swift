@@ -2,7 +2,7 @@
 //  MovieTests.swift
 //  MovieAppTests
 //
-//  Created by Pedro Borrayo on 30/06/25.
+//  Created by Pedro Borrayo on 19/07/25.
 //
 
 import XCTest
@@ -23,6 +23,7 @@ final class MovieTests: XCTestCase {
         """.data(using: .utf8)!
 
         let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
         let movie = try decoder.decode(Movie.self, from: json)
 
         XCTAssertEqual(movie.id, 123)
@@ -43,6 +44,7 @@ final class MovieTests: XCTestCase {
         """.data(using: .utf8)!
 
         let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
         let movie = try decoder.decode(Movie.self, from: json)
 
         XCTAssertEqual(movie.id, 456)

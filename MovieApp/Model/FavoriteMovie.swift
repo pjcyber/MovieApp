@@ -2,7 +2,7 @@
 //  FavoriteMovie.swift
 //  MovieApp
 //
-//  Created by Pedro Borrayo on 30/06/25.
+//  Created by Pedro Borrayo on 19/07/25.
 //
 
 import Foundation

@@ -2,7 +2,7 @@
 //  FavoriteButton.swift
 //  MovieApp
 //
-//  Created by Pedro Borrayo on 30/06/25.
+//  Created by Pedro Borrayo on 19/07/25.
 //
 
 import SwiftUI
@@ -40,5 +40,20 @@ struct FavoriteButton: View {
         .task {
             isLiked = viewModel.isFavoriteMovie(movieId: movie.id, modelContext: modelContext)
         }
+    }
+}
+
+// MARK: - Preview
+struct FavoriteButton_Previews: PreviewProvider {
+    static var previews: some View {
+        let movie = Movie(
+            id: 1,
+            title: "test",
+            overview: "overview",
+            posterPath: "/d73UqZWyw3MUMpeaFcENgLZ2kWS.jpg",
+            voteAverage: 7.557,
+            voteCount: 6566
+        )
+        FavoriteButton(movie: movie)
     }
 }
