@@ -42,3 +42,18 @@ struct FavoriteButton: View {
         }
     }
 }
+
+// MARK: - Preview
+struct FavoriteButton_Previews: PreviewProvider {
+    static var previews: some View {
+        let movie = Movie(
+            id: 1,
+            title: "test",
+            overview: "overview",
+            posterPath: "/d73UqZWyw3MUMpeaFcENgLZ2kWS.jpg",
+            voteAverage: 7.557,
+            voteCount: 6566
+        )
+        FavoriteButton(movie: movie)
+    }
+}

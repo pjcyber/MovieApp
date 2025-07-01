@@ -8,6 +8,6 @@
 import Foundation
 
 protocol MovieServiceProtocol {
-    func fetchNowPlaying(_ page: Int) async -> (MovieResponse?, MovieAPIError?)
-    func searchMovies(_ query: String, _ page: Int) async -> (MovieResponse?, MovieAPIError?)
+    func fetchNowPlaying(_ page: Int) async throws -> MovieResponse
+    func searchMovies(_ query: String, _ page: Int) async throws -> MovieResponse
 }

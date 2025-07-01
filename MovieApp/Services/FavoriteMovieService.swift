@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-class FavoriteMovieService {
+class FavoriteMovieService: FavoriteMovieServiceProtocol {
     
     static let shared = FavoriteMovieService()
 

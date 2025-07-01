@@ -38,6 +38,7 @@ final class MovieResponseTests: XCTestCase {
         """.data(using: .utf8)!
 
         let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
         let response = try decoder.decode(MovieResponse.self, from: json)
 
         XCTAssertEqual(response.page, 1)
@@ -62,6 +63,7 @@ final class MovieResponseTests: XCTestCase {
         """.data(using: .utf8)!
 
         let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
         let response = try decoder.decode(MovieResponse.self, from: json)
 
         XCTAssertEqual(response.page, 2)

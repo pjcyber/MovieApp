@@ -23,6 +23,7 @@ final class MovieTests: XCTestCase {
         """.data(using: .utf8)!
 
         let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
         let movie = try decoder.decode(Movie.self, from: json)
 
         XCTAssertEqual(movie.id, 123)
@@ -43,6 +44,7 @@ final class MovieTests: XCTestCase {
         """.data(using: .utf8)!
 
         let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
         let movie = try decoder.decode(Movie.self, from: json)
 
         XCTAssertEqual(movie.id, 456)
