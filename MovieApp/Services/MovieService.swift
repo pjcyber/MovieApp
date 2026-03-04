@@ -8,17 +8,23 @@
 import Foundation
 
 class MovieService: MovieServiceProtocol {
-    static let shared = MovieService()  
-    
-    private let apiKey = "fb4b63165f5ce5680e1904b9cd40ba73"
+    static let shared = MovieService()
+
+    private let apiKey: String
     private let client: MovieAPIClientProtocol
-    
-    init(client: MovieAPIClientProtocol = MovieAPIClient()) {
+
+    init(apiKey: String? = AppConfig.tmdbApiKey, client: MovieAPIClientProtocol = MovieAPIClient()) {
+        self.apiKey = apiKey ?? ""
         self.client = client
     }
-    
+
+    private func requireApiKey() throws {
+        guard !apiKey.isEmpty else { throw MovieAPIError.missingApiKey }
+    }
+
     func fetchNowPlaying(_ page: Int = 1) async throws -> MovieResponse {
-        var components = URLComponents(string: "https://api.themoviedb.org/3/movie/now_playing")
+        try requireApiKey()
+        var components = URLComponents(string: "\(AppConfig.tmdbAPIBaseURL)/movie/now_playing")
         components?.queryItems = [
             URLQueryItem(name: "api_key", value: apiKey),
             URLQueryItem(name: "language", value: "en-US"),
@@ -33,20 +39,18 @@ class MovieService: MovieServiceProtocol {
     }
     
     func searchMovies(_ query: String, _ page: Int) async throws -> MovieResponse {
+        try requireApiKey()
         let trimmedQuery = query.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        // If query is empty after trimming, return early with .invalidURL
+
         guard !trimmedQuery.isEmpty else {
             throw MovieAPIError.invalidURL
         }
-        
-        // Safely encode query
+
         guard let queryEncoded = trimmedQuery.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             throw MovieAPIError.invalidURL
         }
-        
-        // Use URLComponents to build the URL properly
-        var components = URLComponents(string: "https://api.themoviedb.org/3/search/movie")
+
+        var components = URLComponents(string: "\(AppConfig.tmdbAPIBaseURL)/search/movie")
         components?.queryItems = [
             URLQueryItem(name: "api_key", value: apiKey),
             URLQueryItem(name: "language", value: "en-US"),

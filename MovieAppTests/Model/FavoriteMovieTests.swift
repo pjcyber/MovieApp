@@ -22,7 +22,7 @@ final class FavoriteMovieTests: XCTestCase {
     func testInsertAndFetchFavoriteMovie() throws {
         // Create movie
         let movie = FavoriteMovie(
-            orgintalId: 101,
+            originalId: 101,
             overview: "A great movie",
             posterPath: "/poster.jpg",
             title: "Test Title",
@@ -41,7 +41,7 @@ final class FavoriteMovieTests: XCTestCase {
         XCTAssertEqual(fetched.count, 1)
 
         let fetchedMovie = fetched.first!
-        XCTAssertEqual(fetchedMovie.orgintalId, 101)
+        XCTAssertEqual(fetchedMovie.originalId, 101)
         XCTAssertEqual(fetchedMovie.title, "Test Title")
         XCTAssertEqual(fetchedMovie.overview, "A great movie")
         XCTAssertEqual(fetchedMovie.posterPath, "/poster.jpg")
@@ -51,8 +51,8 @@ final class FavoriteMovieTests: XCTestCase {
 
     func testInsertMultipleFavorites() throws {
         let movies = [
-            FavoriteMovie(orgintalId: 1, overview: "First", posterPath: nil, title: "One", voteAverage: nil, voteCount: nil),
-            FavoriteMovie(orgintalId: 2, overview: "Second", posterPath: "/img.jpg", title: "Two", voteAverage: 5.5, voteCount: 300)
+            FavoriteMovie(originalId: 1, overview: "First", posterPath: nil, title: "One", voteAverage: nil, voteCount: nil),
+            FavoriteMovie(originalId: 2, overview: "Second", posterPath: "/img.jpg", title: "Two", voteAverage: 5.5, voteCount: 300)
         ]
 
         for movie in movies {

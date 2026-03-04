@@ -28,7 +28,7 @@ final class FavoriteMovieViewModelTests: XCTestCase {
     @MainActor
     func testStoreFavoriteMovie() {
         let movie = FavoriteMovie(
-            orgintalId: 123,
+            originalId: 123,
             overview: "Test Overview",
             posterPath: "/test.jpg",
             title: "Test Movie",
@@ -39,7 +39,7 @@ final class FavoriteMovieViewModelTests: XCTestCase {
         viewModel.storeFavoriteMovie(favoriteMovie: movie, modelContext: context)
 
         let descriptor = FetchDescriptor<FavoriteMovie>(
-            predicate: #Predicate { $0.orgintalId == 123 }
+            predicate: #Predicate { $0.originalId == 123 }
         )
         let fetched = try? context.fetch(descriptor)
 
@@ -50,7 +50,7 @@ final class FavoriteMovieViewModelTests: XCTestCase {
     @MainActor
     func testDeleteFavoriteMovie() {
         let movie = FavoriteMovie(
-            orgintalId: 456,
+            originalId: 456,
             overview: "To be deleted",
             posterPath: nil,
             title: "Delete Me",
@@ -62,7 +62,7 @@ final class FavoriteMovieViewModelTests: XCTestCase {
         viewModel.deleteFavoriteMovie(movieId: 456, modelContext: context)
 
         let descriptor = FetchDescriptor<FavoriteMovie>(
-            predicate: #Predicate { $0.orgintalId == 456 }
+            predicate: #Predicate { $0.originalId == 456 }
         )
         let fetched = try? context.fetch(descriptor)
 
@@ -72,7 +72,7 @@ final class FavoriteMovieViewModelTests: XCTestCase {
     @MainActor
     func testIsFavoriteMovie() {
         let movie = FavoriteMovie(
-            orgintalId: 789,
+            originalId: 789,
             overview: "Favorite check",
             posterPath: nil,
             title: "Fav Test",

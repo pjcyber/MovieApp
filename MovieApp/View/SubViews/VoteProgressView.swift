@@ -44,6 +44,8 @@ struct VoteProgressView: View {
             }
         }
         .frame(width: 80, height: 80)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(String(localized: "Rating \(String(format: "%.1f", voteAverage)) out of 10, \(voteCount) votes"))
     }
 }
 

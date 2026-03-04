@@ -6,54 +6,36 @@
 //
 
 import SwiftUI
-import SwiftData
 
 struct FavoriteButton: View {
-    
-    @State private var isLiked = false
-    @StateObject private var viewModel = FavoriteMovieViewModel()
-    @Environment(\.modelContext) private var modelContext
-    
-    let movie: Movie
-    
+
+    let isFavorite: Bool
+    let onToggle: () -> Void
+
     var body: some View {
         Button(action: {
-            withAnimation {
-                isLiked.toggle()
-            }
-            let favMovie = FavoriteMovie(orgintalId: movie.id, overview: movie.overview, posterPath: movie.posterPath, title: movie.title, voteAverage: movie.voteAverage, voteCount: movie.voteCount)
-            if (isLiked) {
-                viewModel.storeFavoriteMovie(favoriteMovie: favMovie, modelContext: modelContext)
-            } else {
-                viewModel.deleteFavoriteMovie(movieId: movie.id, modelContext: modelContext)
-            }
+            withAnimation { onToggle() }
         }) {
-            Image(systemName: isLiked ? "heart.fill" : "heart")
+            Image(systemName: isFavorite ? "heart.fill" : "heart")
                 .font(.system(size: 24))
-                .foregroundColor(isLiked ? .red : .white)
+                .foregroundColor(isFavorite ? .red : .white)
                 .padding(8)
                 .background(Color.black.opacity(0.4))
                 .clipShape(Circle())
         }
         .padding(10)
-        .buttonStyle(PlainButtonStyle())
-        .task {
-            isLiked = viewModel.isFavoriteMovie(movieId: movie.id, modelContext: modelContext)
-        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(isFavorite ? String(localized: "Remove from favorites") : String(localized: "Add to favorites"))
+        .accessibilityHint(String(localized: "Double tap to toggle"))
     }
 }
 
 // MARK: - Preview
 struct FavoriteButton_Previews: PreviewProvider {
     static var previews: some View {
-        let movie = Movie(
-            id: 1,
-            title: "test",
-            overview: "overview",
-            posterPath: "/d73UqZWyw3MUMpeaFcENgLZ2kWS.jpg",
-            voteAverage: 7.557,
-            voteCount: 6566
-        )
-        FavoriteButton(movie: movie)
+        Group {
+            FavoriteButton(isFavorite: false, onToggle: {})
+            FavoriteButton(isFavorite: true, onToggle: {})
+        }
     }
 }

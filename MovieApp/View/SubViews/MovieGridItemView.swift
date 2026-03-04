@@ -7,21 +7,31 @@
 
 import SwiftUI
 
-
 struct MovieGridItemView: View {
+
     let movie: Movie
-    
+    let isFavorite: Bool
+    let onToggleFavorite: () -> Void
+
     var body: some View {
-            VStack {
-                if let _ = movie.posterPath {
-                    MovieCardView(movie: movie, width: nil, height: 250.00)
-                }
-                Text(movie.title)
-                    .font(.caption)
-                    .multilineTextAlignment(.center)
-                    .padding([.top, .horizontal], 4)
+        VStack {
+            if movie.posterPath != nil {
+                MovieCardView(
+                    movie: movie,
+                    width: nil,
+                    height: 250,
+                    isFavorite: isFavorite,
+                    onToggleFavorite: onToggleFavorite
+                )
             }
-        
+            Text(movie.title)
+                .font(.caption)
+                .multilineTextAlignment(.center)
+                .padding([.top, .horizontal], 4)
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(movie.title)
+        .accessibilityHint(String(localized: "Double tap to open details"))
     }
 }
 
@@ -36,6 +46,6 @@ struct MovieGridItemView_Previews: PreviewProvider {
             voteAverage: 7.557,
             voteCount: 6566
         )
-        MovieGridItemView(movie: movie)
+        MovieGridItemView(movie: movie, isFavorite: false, onToggleFavorite: {})
     }
 }

@@ -20,18 +20,19 @@ class FavoriteMovieService: FavoriteMovieServiceProtocol {
     
     func deleteMovie(movieId: Int, modelContext: ModelContext) throws {
         let descriptor = FetchDescriptor<FavoriteMovie>(
-            predicate: #Predicate { $0.orgintalId == movieId}
+            predicate: #Predicate { $0.originalId == movieId}
         )
     
         let favoriteMovies = try modelContext.fetch(descriptor)
         if let favMovie = favoriteMovies.first {
             modelContext.delete(favMovie)
+            try modelContext.save()
         }
     }
     
     func isFavoriteMovie(movieId: Int, modelContext: ModelContext) throws  -> Bool {
         let descriptor = FetchDescriptor<FavoriteMovie>(
-                predicate: #Predicate { $0.orgintalId == movieId}
+                predicate: #Predicate { $0.originalId == movieId}
         )
         let favoriteMovies = try modelContext.fetch(descriptor)
         return !favoriteMovies.isEmpty

@@ -13,7 +13,7 @@ final class MovieServiceTests: XCTestCase {
     func testFetchNowPlayingReturnsSuccess() async throws {
         // Given
         let mockClient = MockMovieAPIClient(result: .success(MovieResponse.fixture))
-        let service = MovieService(client: mockClient)
+        let service = MovieService(apiKey: "test_key", client: mockClient)
 
         // When
         let result = try await service.fetchNowPlaying()
@@ -26,7 +26,7 @@ final class MovieServiceTests: XCTestCase {
     func testFetchNowPlayingThrowsError() async {
         // Given
         let mockClient = MockMovieAPIClient(result: .failure(MovieAPIError.invalidResponse))
-        let service = MovieService(client: mockClient)
+        let service = MovieService(apiKey: "test_key", client: mockClient)
 
         // When
         do {
@@ -43,7 +43,7 @@ final class MovieServiceTests: XCTestCase {
         let expectedResponse = MovieResponse.fixture
 
         let mockClient = MockMovieAPIClient(result: .success(MovieResponse.fixture))
-        let service = MovieService(client: mockClient)
+        let service = MovieService(apiKey: "test_key", client: mockClient)
 
         // When
         let response = try await service.searchMovies("Inception", 1)
@@ -55,7 +55,7 @@ final class MovieServiceTests: XCTestCase {
     func testSearchMoviesWithInvalidQueryThrowsInvalidURLError() async throws {
         // Given
         let mockClient = MockMovieAPIClient(result: .failure(MovieAPIError.invalidResponse))
-        let service = MovieService(client: mockClient)
+        let service = MovieService(apiKey: "test_key", client: mockClient)
         let brokenQuery = ""
 
         // When / Then

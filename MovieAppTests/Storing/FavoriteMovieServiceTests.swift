@@ -26,7 +26,7 @@ final class FavoriteMovieServiceTests: XCTestCase {
 
     func testSaveFavoriteMovie() throws {
         let movie = FavoriteMovie(
-            orgintalId: 101,
+            originalId: 101,
             overview: "A test movie",
             posterPath: "/test.jpg",
             title: "Test Title",
@@ -37,7 +37,7 @@ final class FavoriteMovieServiceTests: XCTestCase {
         try service.saveMovie(favoriteMovie: movie, context: modelContext)
 
         let descriptor = FetchDescriptor<FavoriteMovie>(
-            predicate: #Predicate { $0.orgintalId == 101 }
+            predicate: #Predicate { $0.originalId == 101 }
         )
 
         let fetched = try modelContext.fetch(descriptor)
@@ -47,7 +47,7 @@ final class FavoriteMovieServiceTests: XCTestCase {
 
     func testIsFavoriteMovieReturnsTrue() throws {
         let movie = FavoriteMovie(
-            orgintalId: 202,
+            originalId: 202,
             overview: "Another movie",
             posterPath: nil,
             title: "Favorite Check",
@@ -68,7 +68,7 @@ final class FavoriteMovieServiceTests: XCTestCase {
 
     func testDeleteFavoriteMovie() throws {
         let movie = FavoriteMovie(
-            orgintalId: 303,
+            originalId: 303,
             overview: "To be deleted",
             posterPath: nil,
             title: "Delete Test",

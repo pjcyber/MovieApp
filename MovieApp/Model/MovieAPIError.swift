@@ -7,25 +7,28 @@
 
 import Foundation
 
-enum MovieAPIError: Error,LocalizedError {
+enum MovieAPIError: Error, LocalizedError {
     case decodingError(underlying: Error)
     case invalidResponse
     case invalidURL
+    case missingApiKey
     case networkError(Error)
     case unknown
 
     var errorDescription: String {
         switch self {
         case .decodingError(let underlying):
-            return "Decoding failed: \(underlying.localizedDescription)"
+            return String(localized: "Decoding failed: \(underlying.localizedDescription)")
         case .invalidResponse:
-            return "Invalid server response."
+            return String(localized: "Invalid server response.")
         case .invalidURL:
-            return "Invalid URL."
+            return String(localized: "Invalid URL.")
+        case .missingApiKey:
+            return String(localized: "API key not configured. Set TMDB_API_KEY in Scheme environment or Info.plist.")
         case .networkError(let err):
-            return "Network error: \(err.localizedDescription)"
+            return String(localized: "Network error: \(err.localizedDescription)")
         case .unknown:
-            return "An unknown error occurred."
+            return String(localized: "An unknown error occurred.")
         }
     }
 }
