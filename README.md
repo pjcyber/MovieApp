@@ -81,9 +81,9 @@ stateDiagram-v2
 ```mermaid
 flowchart LR
     subgraph Routes["AppRoute"]
-        R1[.home]
-        R2[.favorites]
-        R3[.movieDetail(Movie)]
+        R1[".home"]
+        R2[".favorites"]
+        R3[".movieDetail(Movie)"]
     end
 
     subgraph Screens["Screens"]
@@ -96,7 +96,7 @@ flowchart LR
     R2 --> S2
     R3 --> S3
 
-    RootView["RootView\nNavigationStack(path: $router.path)"] --> R1
+    RootView["RootView + NavigationStack"] --> R1
     RootView --> R2
     RootView --> R3
 ```
@@ -135,18 +135,18 @@ flowchart LR
 flowchart TB
     App[MovieAppApp]
     App --> URLCache
-    App --> ModelContainer[ModelContainer\nSwiftData]
+    App --> ModelContainer["ModelContainer + SwiftData"]
     App --> RootView[RootView]
 
-    RootView --> Router[AppRouter\n@StateObject]
-    RootView --> FavVM[FavoriteMovieViewModel\n@StateObject]
-    RootView --> MovieService[MovieService\nfrom Environment]
+    RootView --> Router["AppRouter StateObject"]
+    RootView --> FavVM["FavoriteMovieViewModel StateObject"]
+    RootView --> MovieService["MovieService from Environment"]
 
-    RootView --> Env[.environment]
+    RootView --> Env[".environment"]
     Env --> movieService
     Env --> appRouter
     Env --> favoriteMovieViewModel
-    Env --> .modelContainer
+    Env --> modelContainer[".modelContainer"]
 
     HomeScreenView[HomeScreenView] -.-> movieService
     HomeScreenView -.-> appRouter
