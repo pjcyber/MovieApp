@@ -20,7 +20,10 @@ struct FavoriteMoviesScreenView: View {
     var body: some View {
         ScrollView {
             if favoriteMovies.isEmpty {
-                emptyStateView
+                EmptyStateView(
+                    systemImageName: "heart.slash",
+                    message: String(localized: "No favorite movies yet. Add some from the list.")
+                )
             } else {
                 LazyVGrid(columns: columns, spacing: 16) {
                     ForEach(favoriteMovies) { favoriteMovie in
@@ -48,22 +51,6 @@ struct FavoriteMoviesScreenView: View {
         .accessibilityLabel(String(localized: "Favorite movies list"))
         .navigationTitle(String(localized: "Favorite Movies"))
         .favoriteErrorAlert(viewModel: favoriteViewModel)
-    }
-
-    @ViewBuilder
-    private var emptyStateView: some View {
-        VStack(spacing: 12) {
-            Image(systemName: "heart.slash")
-                .font(.system(size: 48))
-                .foregroundStyle(.secondary)
-            Text(String(localized: "No favorite movies yet. Add some from the list."))
-                .font(.body)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 48)
     }
 }
 

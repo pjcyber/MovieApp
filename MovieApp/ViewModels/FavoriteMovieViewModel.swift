@@ -17,7 +17,7 @@ class FavoriteMovieViewModel: ObservableObject {
         errorMessage = nil
     }
 
-    func storeFavoriteMovie(favoriteMovie: FavoriteMovie, modelContext: ModelContext) {
+    func saveFavoriteMovie(favoriteMovie: FavoriteMovie, modelContext: ModelContext) {
         do {
             try FavoriteMovieService.shared.saveMovie(favoriteMovie: favoriteMovie, context: modelContext)
         } catch {

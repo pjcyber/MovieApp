@@ -22,6 +22,7 @@ enum AppConfig {
         #if DEBUG
         // Development fallback so the app runs without configuring the scheme. For production, set TMDB_API_KEY.
         return "fb4b63165f5ce5680e1904b9cd40ba73"
+        //return ""
         #else
         return nil
         #endif
@@ -33,12 +34,13 @@ enum AppConfig {
     static let tmdbPosterBaseURL = "https://image.tmdb.org/t/p/w500"
 
     // MARK: - Search
-
-    /// Debounce delay for search input (nanoseconds).
+    /// Debounce delay for search input (350 nanoseconds).
     static let searchDebounceNanoseconds: UInt64 = 350_000_000
 
     // MARK: - Image cache
 
+    // 50 MB
     static let urlCacheMemoryCapacity = 50 * 1024 * 1024
+    // 100 MB
     static let urlCacheDiskCapacity = 100 * 1024 * 1024
 }

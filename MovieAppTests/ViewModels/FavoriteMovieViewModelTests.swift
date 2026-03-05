@@ -36,7 +36,7 @@ final class FavoriteMovieViewModelTests: XCTestCase {
             voteCount: 300
         )
         
-        viewModel.storeFavoriteMovie(favoriteMovie: movie, modelContext: context)
+        viewModel.saveFavoriteMovie(favoriteMovie: movie, modelContext: context)
 
         let descriptor = FetchDescriptor<FavoriteMovie>(
             predicate: #Predicate { $0.originalId == 123 }
@@ -58,7 +58,7 @@ final class FavoriteMovieViewModelTests: XCTestCase {
             voteCount: nil
         )
         
-        viewModel.storeFavoriteMovie(favoriteMovie: movie, modelContext: context)
+        viewModel.saveFavoriteMovie(favoriteMovie: movie, modelContext: context)
         viewModel.deleteFavoriteMovie(movieId: 456, modelContext: context)
 
         let descriptor = FetchDescriptor<FavoriteMovie>(
@@ -82,7 +82,7 @@ final class FavoriteMovieViewModelTests: XCTestCase {
         
         XCTAssertFalse(viewModel.isFavoriteMovie(movieId: 789, modelContext: context))
         
-        viewModel.storeFavoriteMovie(favoriteMovie: movie, modelContext: context)
+        viewModel.saveFavoriteMovie(favoriteMovie: movie, modelContext: context)
         
         XCTAssertTrue(viewModel.isFavoriteMovie(movieId: 789, modelContext: context))
     }

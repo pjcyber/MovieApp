@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-/// Router is used from SwiftUI views (MainActor); no need to isolate the type so the EnvironmentKey default can be created.
 final class AppRouter: ObservableObject {
 
     @Published var path: [AppRoute] = []

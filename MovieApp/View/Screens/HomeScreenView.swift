@@ -15,7 +15,9 @@ struct HomeScreenView: View {
 
     @Environment(\.appRouter) private var router
     @Environment(\.favoriteMovieViewModel) private var favoriteViewModel
+    
     @StateObject private var viewModel: MovieViewModel
+    
     @State private var searchTask: Task<Void, Never>?
 
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]
@@ -58,7 +60,12 @@ struct HomeScreenView: View {
             }
 
             if !viewModel.isLoading && viewModel.movies.isEmpty && viewModel.errorMessage == nil {
-                emptyStateView
+                EmptyStateView(
+                    systemImageName: "film.stack",
+                    message: viewModel.searchText.isEmpty
+                        ? String(localized: "No movies in theaters")
+                        : String(localized: "No results for \"\(viewModel.searchText)\"")
+                )
             }
         }
         .accessibilityElement(children: .contain)
@@ -95,6 +102,9 @@ struct HomeScreenView: View {
         .task {
             await viewModel.loadMovies()
         }
+        .onDisappear {
+            searchTask?.cancel()
+        }
         .alert(String(localized: "Error"), isPresented: Binding(
             get: { viewModel.errorMessage != nil },
             set: { if !$0 { viewModel.clearError() } }
@@ -118,22 +128,6 @@ struct HomeScreenView: View {
             }
         }
         .favoriteErrorAlert(viewModel: favoriteViewModel)
-    }
-
-    @ViewBuilder
-    private var emptyStateView: some View {
-        VStack(spacing: 12) {
-            Image(systemName: "film.stack")
-                .font(.system(size: 48))
-                .foregroundStyle(.secondary)
-            Text(viewModel.searchText.isEmpty ? String(localized: "No movies in theaters") : String(localized: "No results for \"\(viewModel.searchText)\""))
-                .font(.body)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 48)
     }
 }
 
